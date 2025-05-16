@@ -40,5 +40,5 @@ Only clean, compliant code makes it to deployment.
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/codeguardian.git
-cd codeguardian
+git clone https://github.com/your-username/Matrix-Code.git
+cd Matrix-Code
