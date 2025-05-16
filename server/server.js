@@ -1,8 +1,8 @@
-
 const express = require('express');
 const cors = require('cors');
 const { MongoClient, ObjectId } = require('mongodb');
 const bodyParser = require('body-parser');
+require('dotenv').config();
 
 // Initialize Express app
 const app = express();
@@ -12,19 +12,23 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(bodyParser.json());
 
-// MongoDB Connection URI (replace with your actual MongoDB URI)
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/code-analyzer';
-const DB_NAME = 'code-analyzer';
+// MongoDB Connection URI
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://Dev:Dev1234@cluster0.3vcjnag.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+const DB_NAME = 'code-analyzer';  // Replace with your actual DB name
+
+let db;
 
 // Connect to MongoDB
-let db;
 async function connectToDatabase() {
   try {
-    const client = await MongoClient.connect(MONGODB_URI);
+    const client = await MongoClient.connect(MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     db = client.db(DB_NAME);
-    console.log('Connected to MongoDB');
+    console.log('✅ Connected to MongoDB');
   } catch (error) {
-    console.error('MongoDB connection error:', error);
+    console.error('❌ MongoDB connection error:', error);
     process.exit(1);
   }
 }
@@ -76,5 +80,5 @@ app.post('/api/analyses', async (req, res) => {
 // Start the server
 app.listen(PORT, async () => {
   await connectToDatabase();
-  console.log(`Server running on port ${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
 });
