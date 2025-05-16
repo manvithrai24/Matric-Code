@@ -3,10 +3,12 @@ import React, { useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import CodeEditor from '@/components/CodeEditor';
 import Report, { IssueType } from '@/components/Report';
+import History from '@/components/History';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { sampleCode } from '@/utils/sampleCode';
 import { analyzeCode } from '@/services/analyzerService';
+import { AnalysisResult } from '@/services/mongoDbService';
 import { toast } from 'sonner';
 
 const Index = () => {
@@ -16,6 +18,7 @@ const Index = () => {
     score: 0,
     issues: [],
   });
+  const [activeTab, setActiveTab] = useState('editor');
 
   const handleAnalyze = async () => {
     if (!code.trim()) {
@@ -47,6 +50,16 @@ const Index = () => {
     }
   };
 
+  const handleSelectAnalysis = (analysis: AnalysisResult) => {
+    setCode(analysis.code);
+    setReportData({
+      score: analysis.score,
+      issues: analysis.issues
+    });
+    setActiveTab('editor');
+    toast.info('Loaded analysis from history');
+  };
+
   // Run initial analysis when component loads
   useEffect(() => {
     handleAnalyze();
@@ -68,27 +81,40 @@ const Index = () => {
             </Button>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <div className="space-y-4">
-              <h3 className="text-lg font-medium text-gray-700">Code Input</h3>
-              <CodeEditor 
-                code={code} 
-                onChange={setCode} 
-                hasError={reportData.issues.some(issue => issue.severity === 'error')}
-              />
-              
-              <div className="text-sm text-gray-500">
-                <p>Enter or paste your code above and click "Run Analysis" to check for issues.</p>
-              </div>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-2 space-y-4">
+              <Tabs value={activeTab} onValueChange={setActiveTab}>
+                <TabsList>
+                  <TabsTrigger value="editor">Code Editor</TabsTrigger>
+                  <TabsTrigger value="results">Analysis Results</TabsTrigger>
+                </TabsList>
+                
+                <TabsContent value="editor" className="space-y-4">
+                  <h3 className="text-lg font-medium text-gray-700">Code Input</h3>
+                  <CodeEditor 
+                    code={code} 
+                    onChange={setCode} 
+                    hasError={reportData.issues.some(issue => issue.severity === 'error')}
+                  />
+                  
+                  <div className="text-sm text-gray-500">
+                    <p>Enter or paste your code above and click "Run Analysis" to check for issues.</p>
+                  </div>
+                </TabsContent>
+                
+                <TabsContent value="results" className="space-y-4">
+                  <h3 className="text-lg font-medium text-gray-700">Analysis Results</h3>
+                  <Report 
+                    isLoading={isAnalyzing}
+                    score={reportData.score}
+                    issues={reportData.issues}
+                  />
+                </TabsContent>
+              </Tabs>
             </div>
 
             <div className="space-y-4">
-              <h3 className="text-lg font-medium text-gray-700">Analysis Results</h3>
-              <Report 
-                isLoading={isAnalyzing}
-                score={reportData.score}
-                issues={reportData.issues}
-              />
+              <History onSelectAnalysis={handleSelectAnalysis} />
             </div>
           </div>
           
@@ -132,6 +158,7 @@ const Index = () => {
                   <li>Review the results in the Analysis Results panel</li>
                   <li>Fix the identified issues in your code</li>
                   <li>Run the analysis again to verify your fixes</li>
+                  <li>View your analysis history in the sidebar</li>
                 </ol>
               </TabsContent>
             </Tabs>

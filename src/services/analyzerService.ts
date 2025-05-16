@@ -1,6 +1,6 @@
-
 import { IssueType } from '@/components/Report';
 import { v4 as uuidv4 } from 'uuid';
+import { saveAnalysisResult, AnalysisResult } from './mongoDbService';
 
 // Example rules for JavaScript/TypeScript
 const rules = [
@@ -185,6 +185,7 @@ const rules = [
 export async function analyzeCode(code: string): Promise<{
   score: number;
   issues: IssueType[];
+  savedId?: string;
 }> {
   // Simulate API delay
   await new Promise(resolve => setTimeout(resolve, 1500));
@@ -210,5 +211,20 @@ export async function analyzeCode(code: string): Promise<{
   // Ensure score is between 0 and 100
   score = Math.max(0, Math.min(100, score));
   
-  return { score, issues: allIssues };
+  // Save result to MongoDB if code is not empty
+  let savedId: string | null = null;
+  if (code.trim()) {
+    try {
+      savedId = await saveAnalysisResult({
+        code,
+        score,
+        issues: allIssues,
+        timestamp: new Date()
+      });
+    } catch (error) {
+      console.error("Error saving to MongoDB, continuing with local analysis", error);
+    }
+  }
+
+  return { score, issues: allIssues, savedId: savedId || undefined };
 }
