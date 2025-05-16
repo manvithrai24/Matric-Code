@@ -119,5 +119,5 @@ npm start
 The frontend will open automatically at:
 ```bash
 http://localhost:3000
-```bash
+```
 
