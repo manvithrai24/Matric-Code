@@ -15,9 +15,10 @@ export interface AnalysisResult {
   timestamp: Date;
 }
 
-// API endpoint for your backend
-// Replace with your actual backend URL when deployed
-const API_URL = '/api';
+// API endpoint for your backend - point to local server in development
+const API_URL = process.env.NODE_ENV === 'production' 
+  ? '/api' 
+  : 'http://localhost:3001/api';
 
 /**
  * Save analysis result to the backend
