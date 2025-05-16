@@ -4,6 +4,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button';
+import { Download } from 'lucide-react';
+import { toast } from 'sonner';
 
 export interface IssueType {
   id: string;
@@ -43,15 +46,61 @@ const Report: React.FC<ReportProps> = ({ isLoading, score, issues }) => {
     if (score >= 70) return 'text-analyzer-warning';
     return 'text-analyzer-error';
   };
+
+  const downloadReport = () => {
+    // Create the report content
+    let reportContent = `CODE QUALITY ANALYSIS REPORT\n`;
+    reportContent += `=========================\n\n`;
+    reportContent += `Overall Score: ${score}%\n`;
+    reportContent += `Errors: ${errorsCount}\n`;
+    reportContent += `Warnings: ${warningsCount}\n`;
+    reportContent += `Info: ${infoCount}\n\n`;
+    reportContent += `ISSUES SUMMARY\n`;
+    reportContent += `=============\n\n`;
+
+    issues.forEach((issue, index) => {
+      reportContent += `[${issue.severity.toUpperCase()}] ${issue.message}\n`;
+      reportContent += `Location: Line ${issue.line}, Column ${issue.column}\n`;
+      reportContent += `Rule: ${issue.rule}\n\n`;
+    });
+
+    // Create a blob and download link
+    const blob = new Blob([reportContent], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'code-analysis-report.txt';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    
+    toast.success('Report downloaded successfully');
+  };
   
   return (
     <div className="space-y-4">
       <Card>
         <CardHeader className="pb-2">
-          <CardTitle>Analysis Report</CardTitle>
-          <CardDescription>
-            {isLoading ? 'Analyzing code...' : 'Analysis completed'}
-          </CardDescription>
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle>Analysis Report</CardTitle>
+              <CardDescription>
+                {isLoading ? 'Analyzing code...' : 'Analysis completed'}
+              </CardDescription>
+            </div>
+            {!isLoading && issues.length > 0 && (
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={downloadReport}
+                className="flex items-center gap-1"
+              >
+                <Download className="h-4 w-4" />
+                <span>Download</span>
+              </Button>
+            )}
+          </div>
         </CardHeader>
         <CardContent>
           <div className="grid gap-4 md:grid-cols-2">

@@ -45,9 +45,16 @@ const Header = () => {
             >
               Dashboard
             </Link>
-            <a href="#" className="px-3 py-2 text-sm font-medium text-foreground hover:text-primary">
-              Settings
-            </a>
+            <Link 
+              to="/docs" 
+              className={`px-3 py-2 text-sm font-medium ${
+                location.pathname === '/docs' 
+                  ? 'text-primary border-b-2 border-primary' 
+                  : 'text-foreground hover:text-primary'
+              }`}
+            >
+              Docs
+            </Link>
             <a href="#" className="px-3 py-2 text-sm font-medium text-foreground hover:text-primary">
               Help
             </a>
