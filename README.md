@@ -47,23 +47,24 @@
 ### 🛠️ Installation & Running
 
 1. **Clone the Repository**
-
+```bash
 git clone https://github.com/manvithrai24/Matric-Code.git
 cd Matric-Code/server
-
+```
 
 2. **Install Backend Dependencies**
-
+```bash
 npm install
+```
 
 
 3. **Setup Environment Variables**
 
 Create a `.env` file inside the `server` folder with the following:
-
+```bash
 MONGODB_URI=your_mongodb_connection_string_here
 PORT=3001
-
+```
 
 
 🔒 Replace `your_mongodb_connection_string_here` with your actual MongoDB URI.
@@ -72,50 +73,51 @@ PORT=3001
 
 If you see this error:
 
+```bash
 running scripts is disabled on this system
-
+```
 
 Open PowerShell as Administrator and run:
-
+```bash
 Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
-
+```
 
 Press `Y` and Enter to confirm.
 
 5. **Start the Backend Server**
-
+```bash
 npm start
-
+```
 Or if you have nodemon installed:
-
+```bash
 npm run dev
-
+```
 
 You should see:
-
+```bash
 ✅ Connected to MongoDB
 🚀 Server running on port 3001
-
+```
 
 6. **Verify Backend API**
 
 Open your browser or API tool (Postman) and visit:
-
+```bash
 http://localhost:3001/api/analyses
-
+```
 
 You should receive a JSON response (empty if no data).
 
 7. **Run the Frontend**
 
 Open a new terminal, navigate to the frontend folder, then:
-
+```bash
 cd ..
 npm install
 npm start
-
+```
 The frontend will open automatically at:
-
+```bash
 http://localhost:3000
-
+```bash
 
