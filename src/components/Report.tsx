@@ -115,6 +115,20 @@ const IssuesList: React.FC<{ issues: IssueType[] }> = ({ issues }) => {
     );
   }
 
+  // Fixed: Add the getSeverityColor function here as well
+  const getSeverityColor = (severity: string) => {
+    switch (severity) {
+      case 'error':
+        return 'bg-analyzer-error text-white';
+      case 'warning':
+        return 'bg-analyzer-warning text-white';
+      case 'info':
+        return 'bg-analyzer-info text-white';
+      default:
+        return 'bg-gray-500 text-white';
+    }
+  };
+
   return (
     <div className="space-y-2">
       {issues.map((issue) => (
