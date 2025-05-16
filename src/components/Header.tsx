@@ -7,19 +7,19 @@ const Header = () => {
   const location = useLocation();
   
   return (
-    <header className="bg-white shadow-sm border-b">
+    <header className="bg-background shadow-sm border-b border-border">
       <div className="container mx-auto py-4 px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           <div className="flex items-center">
             <div className="flex-shrink-0">
               <Link to="/">
-                <h1 className="text-2xl font-bold text-analyzer-primary">
-                  CodeAnalyzer<span className="text-analyzer-secondary">Pro</span>
+                <h1 className="text-2xl font-bold text-primary">
+                  Matrix<span className="text-secondary">Code</span>
                 </h1>
               </Link>
             </div>
             <div className="ml-4">
-              <Badge variant="outline" className="text-xs font-medium text-gray-500">
+              <Badge variant="outline" className="text-xs font-medium text-muted-foreground">
                 v1.0.0
               </Badge>
             </div>
@@ -29,8 +29,8 @@ const Header = () => {
               to="/" 
               className={`px-3 py-2 text-sm font-medium ${
                 location.pathname === '/' 
-                  ? 'text-analyzer-primary border-b-2 border-analyzer-primary' 
-                  : 'text-gray-700 hover:text-analyzer-primary'
+                  ? 'text-primary border-b-2 border-primary' 
+                  : 'text-foreground hover:text-primary'
               }`}
             >
               Home
@@ -39,16 +39,16 @@ const Header = () => {
               to="/dashboard" 
               className={`px-3 py-2 text-sm font-medium ${
                 location.pathname === '/dashboard' 
-                  ? 'text-analyzer-primary border-b-2 border-analyzer-primary' 
-                  : 'text-gray-700 hover:text-analyzer-primary'
+                  ? 'text-primary border-b-2 border-primary' 
+                  : 'text-foreground hover:text-primary'
               }`}
             >
               Dashboard
             </Link>
-            <a href="#" className="px-3 py-2 text-sm font-medium text-gray-700 hover:text-analyzer-primary">
+            <a href="#" className="px-3 py-2 text-sm font-medium text-foreground hover:text-primary">
               Settings
             </a>
-            <a href="#" className="px-3 py-2 text-sm font-medium text-gray-700 hover:text-analyzer-primary">
+            <a href="#" className="px-3 py-2 text-sm font-medium text-foreground hover:text-primary">
               Help
             </a>
           </nav>

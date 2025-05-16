@@ -64,13 +64,13 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				analyzer: {
-					primary: '#6E59A5',
-					secondary: '#8B5CF6',
+					primary: '#11592F',
+					secondary: '#5ED97F',
 					error: '#ea384c',
 					warning: '#F97316',
 					success: '#16a34a',
 					info: '#0EA5E9',
-					background: '#F1F0FB',
+					background: '#F2FFED',
 				}
 			},
 			borderRadius: {
