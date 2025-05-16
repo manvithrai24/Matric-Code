@@ -1,20 +1,10 @@
 
-import { MongoClient, ServerApiVersion, ObjectId } from 'mongodb';
 import { IssueType } from '@/components/Report';
 import { toast } from 'sonner';
 
-// MongoDB connection string
-const uri = "mongodb+srv://devops:Basu%402003@cluster0.cwufnhl.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-const dbName = "matrix_code";
-
-// Create a MongoClient
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  }
-});
+// Fake API URL - in a real app, this would point to your backend server
+// We'll mock the API behavior since we can't run a real backend in this environment
+const API_URL = '/api';
 
 export interface AnalysisResult {
   id?: string;
@@ -24,89 +14,96 @@ export interface AnalysisResult {
   timestamp: Date;
 }
 
-/**
- * Connect to MongoDB
- */
-async function connect() {
-  try {
-    await client.connect();
-    console.log("Connected to MongoDB");
-    return client;
-  } catch (error) {
-    console.error("Failed to connect to MongoDB", error);
-    toast.error("Failed to connect to MongoDB. Using local analysis only.");
-    throw error;
-  }
-}
+// Store for demo purposes (simulates a database)
+// In a real app, this would be handled by your Node.js backend
+let mockDatabase: AnalysisResult[] = [];
 
 /**
- * Save analysis result to MongoDB
+ * Mock API service to simulate backend API calls
+ * In a real app, these would be actual fetch calls to your Node.js backend
+ */
+const mockAPI = {
+  async post(endpoint: string, data: any): Promise<any> {
+    console.log(`Mock API POST to ${endpoint}`, data);
+    
+    if (endpoint === '/analyses') {
+      // Simulate saving data
+      const id = Math.random().toString(36).substring(2, 15);
+      const newItem = { ...data, id, timestamp: new Date() };
+      mockDatabase.push(newItem);
+      return { id };
+    }
+    
+    return null;
+  },
+  
+  async get(endpoint: string): Promise<any> {
+    console.log(`Mock API GET to ${endpoint}`);
+    
+    if (endpoint === '/analyses') {
+      // Simulate fetching all analyses
+      return [...mockDatabase].sort((a, b) => 
+        new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+      );
+    }
+    
+    // For endpoints like '/analyses/:id'
+    if (endpoint.startsWith('/analyses/')) {
+      const id = endpoint.split('/').pop();
+      return mockDatabase.find(item => item.id === id) || null;
+    }
+    
+    return null;
+  }
+};
+
+/**
+ * Save analysis result to the backend
  */
 export async function saveAnalysisResult(analysis: AnalysisResult): Promise<string | null> {
   try {
-    await connect();
-    const db = client.db(dbName);
-    const collection = db.collection("analyses");
+    // In a real app, this would be an actual API call to your Node.js server
+    const response = await mockAPI.post('/analyses', analysis);
     
-    const result = await collection.insertOne({
-      ...analysis,
-      timestamp: new Date()
-    });
-    
-    toast.success("Analysis saved to database");
-    return result.insertedId.toString();
+    if (response?.id) {
+      toast.success("Analysis saved");
+      return response.id;
+    } else {
+      throw new Error("Failed to save analysis");
+    }
   } catch (error) {
     console.error("Error saving analysis:", error);
     toast.error("Failed to save analysis to database");
     return null;
-  } finally {
-    await client.close();
   }
 }
 
 /**
- * Get analysis history
+ * Get analysis history from the backend
  */
 export async function getAnalysisHistory(): Promise<AnalysisResult[]> {
   try {
-    await connect();
-    const db = client.db(dbName);
-    const collection = db.collection("analyses");
-    
-    const results = await collection.find()
-      .sort({ timestamp: -1 })
-      .limit(10)
-      .toArray();
-    
-    return results as unknown as AnalysisResult[];
+    // In a real app, this would be an actual API call to your Node.js server
+    const results = await mockAPI.get('/analyses');
+    return results;
   } catch (error) {
     console.error("Error fetching analysis history:", error);
     toast.error("Failed to fetch analysis history");
     return [];
-  } finally {
-    await client.close();
   }
 }
 
 /**
- * Get a single analysis by ID
+ * Get a single analysis by ID from the backend
  */
 export async function getAnalysisById(id: string): Promise<AnalysisResult | null> {
   try {
-    await connect();
-    const db = client.db(dbName);
-    const collection = db.collection("analyses");
-    
-    // Convert string ID to ObjectId before querying
-    const objectId = new ObjectId(id);
-    const result = await collection.findOne({ _id: objectId });
-    
-    return result as unknown as AnalysisResult;
+    // In a real app, this would be an actual API call to your Node.js server
+    const result = await mockAPI.get(`/analyses/${id}`);
+    return result;
   } catch (error) {
     console.error("Error fetching analysis:", error);
     toast.error("Failed to fetch analysis");
     return null;
-  } finally {
-    await client.close();
   }
 }
