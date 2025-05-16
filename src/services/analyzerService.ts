@@ -16,7 +16,7 @@ const rules = [
             id: uuidv4(),
             line,
             column,
-            severity: 'warning',
+            severity: 'warning' as 'warning',
             message: 'Use let or const instead of var',
             rule: 'no-var',
           };
@@ -37,7 +37,7 @@ const rules = [
             id: uuidv4(),
             line,
             column,
-            severity: 'info',
+            severity: 'info' as 'info',
             message: 'Avoid using console statements in production code',
             rule: 'no-console',
           };
@@ -71,7 +71,7 @@ const rules = [
               id: uuidv4(),
               line,
               column,
-              severity: 'warning',
+              severity: 'warning' as 'warning',
               message: `Unused variable: ${varName}`,
               rule: 'no-unused-vars',
             });
@@ -100,7 +100,7 @@ const rules = [
             id: uuidv4(),
             line: index + 1,
             column: line.length + 1,
-            severity: 'info',
+            severity: 'info' as 'info',
             message: 'Missing semicolon',
             rule: 'missing-semicolon',
           });
@@ -116,7 +116,7 @@ const rules = [
       // Look for empty catch blocks
       const matches = code.match(/catch\s*\([^)]*\)\s*{\s*}/g);
       if (matches) {
-        return matches.map((match, index) => {
+        return matches.map((match) => {
           const matchPos = code.indexOf(match);
           const line = code.substring(0, matchPos).split('\n').length;
           const column = code.split('\n')[line - 1].indexOf('catch') + 1;
@@ -125,7 +125,7 @@ const rules = [
             id: uuidv4(),
             line,
             column,
-            severity: 'error',
+            severity: 'error' as 'error',
             message: 'Empty catch block is a poor error handling practice',
             rule: 'no-empty-catch',
           };
@@ -147,7 +147,7 @@ const rules = [
             id: uuidv4(),
             line: index + 1,
             column: maxLength + 1,
-            severity: 'info',
+            severity: 'info' as 'info',
             message: `Line exceeds maximum length of ${maxLength} characters`,
             rule: 'max-line-length',
           });
@@ -171,7 +171,7 @@ const rules = [
             id: uuidv4(),
             line,
             column,
-            severity: 'error',
+            severity: 'error' as 'error',
             message: 'Avoid using eval() as it creates security vulnerabilities',
             rule: 'security-eval',
           };
