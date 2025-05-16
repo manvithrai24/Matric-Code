@@ -1,4 +1,4 @@
-# CodeGuardian 🚦
+# Matric-Code 🚦
 **Automated Code Quality and Standards Compliance Analyzer (MERN Stack)**
 
 ---
