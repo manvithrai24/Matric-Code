@@ -1,4 +1,4 @@
-# Matric-Code 🚦
+# Matrix-Code 🚦
 **Automated Code Quality and Standards Compliance Analyzer (MERN Stack)**
 
 ---
