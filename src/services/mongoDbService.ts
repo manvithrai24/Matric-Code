@@ -1,11 +1,10 @@
 
-import { MongoClient, ServerApiVersion } from 'mongodb';
+import { MongoClient, ServerApiVersion, ObjectId } from 'mongodb';
 import { IssueType } from '@/components/Report';
 import { toast } from 'sonner';
 
-// MongoDB connection string - replace with your actual connection string
-// This should ideally be an environment variable in production
-const uri = "mongodb://localhost:27017";
+// MongoDB connection string
+const uri = "mongodb+srv://devops:Basu%402003@cluster0.cwufnhl.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 const dbName = "matrix_code";
 
 // Create a MongoClient
@@ -98,7 +97,10 @@ export async function getAnalysisById(id: string): Promise<AnalysisResult | null
     const db = client.db(dbName);
     const collection = db.collection("analyses");
     
-    const result = await collection.findOne({ _id: id });
+    // Convert string ID to ObjectId before querying
+    const objectId = new ObjectId(id);
+    const result = await collection.findOne({ _id: objectId });
+    
     return result as unknown as AnalysisResult;
   } catch (error) {
     console.error("Error fetching analysis:", error);
