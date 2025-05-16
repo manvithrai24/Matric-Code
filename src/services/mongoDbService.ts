@@ -15,16 +15,15 @@ export interface AnalysisResult {
   timestamp: Date;
 }
 
-// API endpoint for your backend - point to local server in development
-const API_URL = process.env.NODE_ENV === 'production' 
-  ? '/api' 
-  : 'http://localhost:3001/api';
+// API endpoint for your backend - ensure this points to your running backend server
+const API_URL = 'http://localhost:3001/api';
 
 /**
  * Save analysis result to the backend
  */
 export async function saveAnalysisResult(analysis: AnalysisResult): Promise<string | null> {
   try {
+    console.log("Attempting to save analysis to:", `${API_URL}/analyses`);
     const response = await fetch(`${API_URL}/analyses`, {
       method: 'POST',
       headers: {
@@ -59,6 +58,7 @@ export async function saveAnalysisResult(analysis: AnalysisResult): Promise<stri
  */
 export async function getAnalysisHistory(): Promise<AnalysisResult[]> {
   try {
+    console.log("Attempting to fetch history from:", `${API_URL}/analyses`);
     const response = await fetch(`${API_URL}/analyses`);
     
     if (!response.ok) {
@@ -83,6 +83,7 @@ export async function getAnalysisHistory(): Promise<AnalysisResult[]> {
  */
 export async function getAnalysisById(id: string): Promise<AnalysisResult | null> {
   try {
+    console.log("Attempting to fetch analysis by ID from:", `${API_URL}/analyses/${id}`);
     const response = await fetch(`${API_URL}/analyses/${id}`);
     
     if (!response.ok) {
