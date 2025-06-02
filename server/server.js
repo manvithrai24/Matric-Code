@@ -4,6 +4,23 @@ const { MongoClient, ObjectId } = require('mongodb');
 const bodyParser = require('body-parser');
 require('dotenv').config();
 
+
+//START
+const client = require('prom-client');
+
+// Enable collection of default metrics (CPU, memory, etc.)
+const collectDefaultMetrics = client.collectDefaultMetrics;
+collectDefaultMetrics();
+
+const client = require('prom-client');
+
+// Enable collection of default metrics (CPU, memory, etc.)
+const collectDefaultMetrics = client.collectDefaultMetrics;
+collectDefaultMetrics();
+
+
+//END
+
 // Initialize Express app
 const app = express();
 const PORT = process.env.PORT || 3001;
