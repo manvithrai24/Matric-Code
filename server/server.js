@@ -12,11 +12,14 @@ const client = require('prom-client');
 const collectDefaultMetrics = client.collectDefaultMetrics;
 collectDefaultMetrics();
 
-const client = require('prom-client');
-
-// Enable collection of default metrics (CPU, memory, etc.)
-const collectDefaultMetrics = client.collectDefaultMetrics;
-collectDefaultMetrics();
+app.get('/metrics', async (req, res) => {
+  try {
+    res.set('Content-Type', client.register.contentType);
+    res.end(await client.register.metrics());
+  } catch (err) {
+    res.status(500).end(err.message);
+  }
+});
 
 
 //END
