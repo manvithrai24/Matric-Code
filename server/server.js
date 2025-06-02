@@ -5,6 +5,14 @@ const bodyParser = require('body-parser');
 require('dotenv').config();
 
 
+// Initialize Express app
+const app = express();
+const PORT = process.env.PORT || 3001;
+
+app.get('/', (req, res) => {
+  res.send('Backend is running');
+});
+
 //START
 const client = require('prom-client');
 
@@ -24,13 +32,7 @@ app.get('/metrics', async (req, res) => {
 
 //END
 
-// Initialize Express app
-const app = express();
-const PORT = process.env.PORT || 3001;
 
-app.get('/', (req, res) => {
-  res.send('Backend is running');
-});
 
 
 
